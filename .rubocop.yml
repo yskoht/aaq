@@ -1,0 +1,13 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.5
+  Include:
+    - 'bin/aaq'
+    - 'lib/aaq.rb'
+    - 'lib/aaq/version.rb'
+    - 'spec/aaq_spec.rb'
+    - 'spec/spec_helper.rb'
+  Exclude:
+    - 'bin/console'
+
