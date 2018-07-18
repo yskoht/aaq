@@ -11,4 +11,8 @@ opt.banner = 'Usage: bundle exec aaq [image] [--color]'
 opt.on('--color', 'output color ascii-art')
 args = opt.parse(ARGV)
 
-eval AAQ::AAQ.new(args[0]).convert.to_s
+if args.empty?
+  puts opt.help
+else
+  eval AAQ::AAQ.new(args[0]).convert.to_s
+end
