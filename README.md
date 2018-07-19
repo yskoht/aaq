@@ -11,24 +11,10 @@ Create ascii art quine from image file.
 ```sh
 # Download sample image
 curl -O https://github-media-downloads.s3.amazonaws.com/Octocats.zip && unzip Octocats.zip
-bundle exec aaq Octocat/Octocat.png --color
+aaq Octocat/Octocat.png --color
 ```
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'aaq'
-```
-
-And then execute:
-
-```sh
-$ bundle
-```
-
-Or install it yourself as:
 
 ```sh
 $ gem install aaq
@@ -39,28 +25,28 @@ $ gem install aaq
 Simple quine.
 
 ```sh
-bundle exec aaq Octocat/Octocat.png 
+aaq Octocat/Octocat.png
 ```
 
 Colorful quine.
 
 ```sh
-bundle exec aaq Octocat/Octocat.png --color
+aaq Octocat/Octocat.png --color
 ```
 
 Delete escape sequence.
 
 ```sh
-bundle exec aaq Octocat/Octocat.png --color | ruby -ne 'puts $_.gsub(/\e.*?m/, "")' | ruby
+aaq Octocat/Octocat.png --color | ruby -ne 'puts $_.gsub(/\e.*?m/, "")' | ruby
 ```
 
 Put `--color` option.
 
 ```sh
-bundle exec aaq Octocat/Octocat.png | xargs -0 -J % ruby -e % '' --color
+aaq Octocat/Octocat.png | xargs -0 -J % ruby -e % '' --color
 ```
 
-In source code.
+In your source code.
 
 ```ruby
 require 'aaq'
