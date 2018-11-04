@@ -2,18 +2,19 @@ require 'aaq/version'
 require 'aaq/colors'
 
 require 'set'
-require 'rmagick'
+require 'mini_magick'
 
 module AAQ
   UNIT_W = 6
   UNIT_H = 14
 
   class AAQ
-    attr_reader :img, :width, :height, :data, :code
+    attr_reader :img, :width, :height, :data, :code, :pixels
 
     def initialize(input_img)
-      org_img = Magick::ImageList.new(input_img)
+      org_img = MiniMagick::Image.open(input_img)
       @img, @width, @height = resize(org_img)
+      @pixels = img.get_pixels
     end
 
     def convert
@@ -85,9 +86,11 @@ module AAQ
     private
 
     def resize(org_img)
-      w = org_img.columns / UNIT_W
-      h = org_img.rows / UNIT_H
-      [org_img.resize(w * UNIT_W, h * UNIT_H), w, h]
+      w = org_img.dimensions[0] / UNIT_W
+      h = org_img.dimensions[1] / UNIT_H
+      new_w = (w + 1) * UNIT_W
+      new_h = (h + 1) * UNIT_H
+      [org_img.resize("#{new_w}x#{new_h}"), w, h]
     end
 
     def quantize
@@ -106,18 +109,20 @@ module AAQ
       h = Hash.new(0)
       y.upto(y + UNIT_H) do |dy|
         x.upto(x + UNIT_W) do |dx|
-          h[img.pixel_color(dx, dy)] += 1
+          h[pixels[dy][dx]] += 1
         end
       end
       h.max_by { |a| a[1] }[0]
     end
 
     def to_256(pix)
-      [pix.red / 257, pix.green / 257, pix.blue / 257]
+      red, green, blue = pix
+      [red % 256, green % 256, blue % 256]
     end
 
     def to_256color(pix, memo)
-      return -1 if pix.opacity.positive?
+      # TODO: Need to figure out how to extract opacity.
+      # return -1 if pix.opacity.positive?
       return memo[pix] if memo.include?(pix)
 
       memo[pix] = COLORS.min { |a, b|

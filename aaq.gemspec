@@ -2,7 +2,6 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "aaq/version"
-
 Gem::Specification.new do |spec|
   spec.name          = "aaq"
   spec.version       = AAQ::VERSION
@@ -27,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "rubocop", "~> 0.58"
 
-  spec.add_dependency "rmagick", "~> 2.16"
+  spec.add_dependency "mini_magick", "~> 4.9.2"
 end
