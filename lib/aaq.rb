@@ -73,6 +73,7 @@ module AAQ
         width.times do |w|
           i = h * width + w
           next if i < 10
+
           c += co if i >= c.size
           str += b.map { |x| x[i] }.include?(1) ? c[k += 1] : ' '
         end
