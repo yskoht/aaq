@@ -25,6 +25,8 @@ RSpec.describe AAQ do
         expect(f.read).not_to be_empty
       end
 
+      puts `ruby #{t.path}`
+
       res = `ruby -c #{t.path}`
       expect(res).to eq syntax_ok
     end
