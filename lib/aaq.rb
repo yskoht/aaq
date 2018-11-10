@@ -113,7 +113,7 @@ module AAQ
     end
 
     def to_256(pix)
-      [pix.red / 257, pix.green / 257, pix.blue / 257]
+      [pix.red / 256, pix.green / 256, pix.blue / 256]
     end
 
     def to_256color(pix, memo)
