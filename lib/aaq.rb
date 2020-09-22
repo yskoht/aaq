@@ -5,14 +5,16 @@ require 'set'
 require 'rmagick'
 
 module AAQ
-  UNIT_W = 6
-  UNIT_H = 14
+  UNIT_HORIZONTAL_DEFAULT = 6
+  UNIT_VERTICAL_DEFAULT = 14
 
   class AAQ
-    attr_reader :img, :width, :height, :data, :code
+    attr_reader :img, :width, :height, :data, :code, :unit_horizontal, :unit_vertical
 
-    def initialize(input_img)
+    def initialize(input_img, options: {})
       org_img = Magick::ImageList.new(input_img)
+      @unit_horizontal = options[:unit_horizontal] || UNIT_HORIZONTAL_DEFAULT
+      @unit_vertical = options[:unit_vertical] || UNIT_VERTICAL_DEFAULT
       @img, @width, @height = resize(org_img)
     end
 
@@ -86,18 +88,18 @@ module AAQ
     private
 
     def resize(org_img)
-      w = org_img.columns / UNIT_W
-      h = org_img.rows / UNIT_H
-      [org_img.resize(w * UNIT_W, h * UNIT_H), w, h]
+      w = org_img.columns / @unit_horizontal
+      h = org_img.rows / @unit_vertical
+      [org_img.resize(w * @unit_horizontal, h * @unit_vertical), w, h]
     end
 
     def quantize
       memo = {}
 
       Array.new(height) do |h|
-        y = h * UNIT_H
+        y = h * @unit_vertical
         Array.new(width) do |w|
-          x = w * UNIT_W
+          x = w * @unit_horizontal
           to_256color(mode(x, y), memo)
         end
       end
@@ -105,8 +107,8 @@ module AAQ
 
     def mode(x, y)
       h = Hash.new(0)
-      y.upto(y + UNIT_H) do |dy|
-        x.upto(x + UNIT_W) do |dx|
+      y.upto(y + @unit_vertical) do |dy|
+        x.upto(x + @unit_horizontal) do |dx|
           h[img.pixel_color(dx, dy)] += 1
         end
       end

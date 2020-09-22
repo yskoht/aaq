@@ -6,13 +6,27 @@ require 'optparse'
 
 Version = AAQ::VERSION
 
-opt = OptionParser.new
-opt.banner = 'Usage: bundle exec aaq [image] [--color]'
-opt.on('--color', 'output color ascii-art')
-args = opt.parse(ARGV)
+options = {}
+opt = OptionParser.new do |o|
+  o.banner = 'Usage: bundle exec aaq [image] [--color]'
+  o.on('--color', 'Output color ascii-art')
+  o.on('--horizontal N', Integer, 'Number of horizontal pixels per character (default: 6)') do |n|
+    options[:horizontal] = n
+  end
+  o.on('--vertical N', Integer, 'Number of vertical pixels per character (default: 16)') do |n|
+    options[:vertical] = n
+  end
+end
 
+args = opt.parse(ARGV)
 if args.empty?
   puts opt.help
 else
-  eval AAQ::AAQ.new(args[0]).convert.to_s
+  eval AAQ::AAQ.new(
+    args.first,
+    options: {
+      unit_horizontal: options[:horizontal],
+      unit_vertical: options[:vertical]
+    }
+  ).convert.to_s
 end
