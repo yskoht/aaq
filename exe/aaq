@@ -21,7 +21,10 @@ end
 args = opt.parse(ARGV)
 if args.empty?
   puts opt.help
-else
+  exit
+end
+
+begin
   eval AAQ::AAQ.new(
     args.first,
     options: {
@@ -29,4 +32,7 @@ else
       unit_vertical: options[:vertical]
     }
   ).convert.to_s
+rescue SyntaxError
+  warn 'Error: The output ascii art is too small to generate the complete code.'
+  warn 'A smaller value for the --horizontal or --vertical options might remove the error.'
 end
