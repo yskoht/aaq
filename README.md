@@ -8,10 +8,16 @@ Create ascii art quine from image file.
 
 ![Demo.gif](https://github.com/yskoht/aaq/raw/gif/demo.gif)
 
+## Quick start with Docker
+
+You can try aaq easily with [yskoht/aaq](https://hub.docker.com/repository/docker/yskoht/aaq).
+
 ```sh
 # Download sample image
 curl -O https://github-media-downloads.s3.amazonaws.com/Octocats.zip && unzip Octocats.zip
-aaq Octocat/Octocat.png --color
+
+# Mount current directory to read image file
+docker run --rm -v $(pwd):/root yskoht/aaq aaq Octocat/Octocat.png --color
 ```
 
 ## Installation
