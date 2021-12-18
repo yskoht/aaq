@@ -1,6 +1,6 @@
 FROM ruby:2.7.1-alpine
 
-ARG AAQ_VERSION="0.1.4"
+ARG AAQ_VERSION="0.1.5"
 
 RUN apk add --no-cache --virtual=build-deps gcc libc-dev make pkgconfig \
  && apk add --no-cache imagemagick6 imagemagick6-dev imagemagick6-libs \
